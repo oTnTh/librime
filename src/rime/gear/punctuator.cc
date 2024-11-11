@@ -72,15 +72,16 @@ ProcessResult Punctuator::ProcessKeyEvent(const KeyEvent& key_event) {
   if (!use_space_ && ch == XK_space && ctx->IsComposing()) {
     return kNoop;
   }
-  if (ch == '.' || ch == ':') {  // 3.14, 12:30
-    const CommitHistory& history(ctx->commit_history());
-    if (!history.empty()) {
-      const CommitRecord& cr(history.back());
-      if (cr.type == "thru" && cr.text.length() == 1 && isdigit(cr.text[0])) {
-        return kRejected;
-      }
-    }
-  }
+  //8fix: 保持半角数字后的标点符号不发生变化
+  // if (ch == '.' || ch == ':') {  // 3.14, 12:30
+  //   const CommitHistory& history(ctx->commit_history());
+  //   if (!history.empty()) {
+  //     const CommitRecord& cr(history.back());
+  //     if (cr.type == "thru" && cr.text.length() == 1 && isdigit(cr.text[0])) {
+  //       return kRejected;
+  //     }
+  //   }
+  // }
   config_.LoadConfig(engine_);
   string punct_key(1, ch);
   auto punct_definition = config_.GetPunctDefinition(punct_key);
